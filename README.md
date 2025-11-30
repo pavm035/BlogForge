@@ -11,11 +11,12 @@ AI-powered blog generation service built with FastAPI, LangGraph, and modern Pyt
 - **⚡ RESTful API**: FastAPI-based web service with automatic OpenAPI documentation
 - **🎨 Visual Debugging**: LangGraph Studio integration for workflow visualization
 - **🏗️ Production Ready**: Clean architecture with proper configuration management
+
 ## 🏗️ Architecture
 
 BlogForge uses a multi-node LangGraph workflow for intelligent blog generation:
 
-```
+```text
 BlogForge/
 ├── src/
 │   ├── ai/                    # AI workflow components
@@ -31,6 +32,18 @@ BlogForge/
 ├── studio/                    # LangGraph Studio configuration
 ├── main.py                    # Application entry point
 ├── server.py                  # Alternative server with dev/prod modes
+├── pyproject.toml             # uv project configuration
+└── requirements.txt           # Python dependencies
+```
+
+### Workflow
+
+1. **Blog Agent**: Analyzes topic and decides whether to search or generate directly
+2. **Search Node**: Performs Tavily web search if additional information is needed
+3. **Writer Node**: Generates comprehensive blog content in markdown
+4. **Validation Node**: Ensures content quality and completeness
+5. **Translation Node**: Translates content to requested language (if not English)
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -84,6 +97,8 @@ cp .env.example .env
 
 # 5. Run the application
 python main.py
+```
+
 ## 📖 API Usage
 
 ### Generate Blog (English)
@@ -132,6 +147,76 @@ python main.py
 ```bash
 # Generate English blog
 curl -X POST "http://localhost:8000/blog/" \
+     -H "Content-Type: application/json" \
+     -d '{"topic": "FastAPI Tutorial"}'
+
+# Generate Spanish blog
+curl -X POST "http://localhost:8000/blog/" \
+     -H "Content-Type: application/json" \
+     -d '{"topic": "FastAPI Tutorial", "language": "es"}'
+```
+
+### Using Postman
+
+**Method 1: Interactive Swagger UI (Easiest)**
+1. Start the server: `uv run main.py`
+2. Open browser: `http://localhost:8000/docs`
+3. Click on **POST /blog/** endpoint
+4. Click **"Try it out"** button
+5. Edit the request body:
+   ```json
+   {
+     "topic": "Your blog topic here",
+     "language": "en"
+   }
+   ```
+6. Click **"Execute"** button
+7. View the response with generated blog content
+
+**Method 2: Postman Desktop/Web App**
+1. **Create New Request**
+   - Method: `POST`
+   - URL: `http://localhost:8000/blog/`
+
+2. **Set Headers**
+   - Click **Headers** tab
+   - Add: `Content-Type: application/json`
+
+3. **Set Request Body**
+   - Click **Body** tab
+   - Select **raw** and **JSON** format
+   - Enter:
+   ```json
+   {
+     "topic": "Introduction to FastAPI",
+     "language": "en"
+   }
+   ```
+
+4. **Send Request**
+   - Click **Send** button
+   - View response in the bottom panel
+
+**Method 3: Import OpenAPI Schema (Advanced)**
+1. In Postman, click **Import** button
+2. Select **Link** tab
+3. Enter: `http://localhost:8000/openapi.json`
+4. Click **Continue** → **Import**
+5. All endpoints will be auto-imported with examples
+
+### Using Thunder Client (VS Code)
+
+1. Install **Thunder Client** extension in VS Code
+2. Click Thunder Client icon in sidebar
+3. Click **New Request**
+4. Set method to **POST** and URL to `http://localhost:8000/blog/`
+5. Go to **Body** tab, select **JSON**
+6. Enter request body and click **Send**
+
+### Interactive Documentation
+
+Visit **`http://localhost:8000/docs`** for the interactive Swagger UI documentation with built-in API testing.
+
 ## 🔧 Configuration
 
 ### Environment Variables
@@ -145,7 +230,7 @@ Edit your `.env` file with the following variables:
 | `MODEL_NAME` | AI model name | ✅ | `llama-3.3-70b-versatile` |
 | `MODEL_PROVIDER` | Provider name | ✅ | `groq`, `openai`, `anthropic` |
 | `AI_API_KEY` | Alias for your provider's API key | ✅ | Same as GROQ_API_KEY |
-| `AI_BASE_URL` | Custom API endpoint | ❌ | `https://api.custom.com/v1` |
+| `AI_BASE_URL` | Custom API base URL. Required only for custom providers or OpenAI-compatible APIs. Standard providers (Groq, OpenAI, Anthropic) don't need this. | ❌ | `https://api.custom.com/v1` |
 | `LANGSMITH_API_KEY` | LangSmith tracing | ❌ | `ls__...` |
 | `LANGSMITH_TRACING` | Enable LangSmith tracing | ❌ | `true` or `false` |
 | `LANGSMITH_PROJECT` | LangSmith project name | ❌ | `BlogForge` |
@@ -166,6 +251,8 @@ Edit your `.env` file with the following variables:
 - **claude-3-sonnet** - Balanced performance
 
 #### Custom APIs
+- Set `AI_BASE_URL` for OpenAI-compatible endpoints
+
 ## 🚀 Running the Application
 
 ### Development Mode
@@ -175,6 +262,15 @@ Edit your `.env` file with the following variables:
 uv run main.py
 
 # Or using Python directly
+python main.py
+```
+
+The application starts on:
+- **Host**: `0.0.0.0` (accepts external connections)
+- **Port**: `8000`
+- **Docs**: `http://localhost:8000/docs`
+- **OpenAPI**: `http://localhost:8000/openapi.json`
+
 ## 🧪 Testing
 
 ### Quick Test
@@ -203,16 +299,10 @@ curl -X POST "http://localhost:8000/blog/" \
      -d '{"topic": "Développement Web Python", "language": "fr"}'
 ```
 
-### Using Postman or Thunder Client
+## 🎯 Development
 
-1. Import the OpenAPI schema from `http://localhost:8000/openapi.json`
-2. Use the interactive docs at `http://localhost:8000/docs`
+### LangGraph Studio
 
-The application starts on:
-- **Host**: `0.0.0.0` (accepts external connections)
-- **Port**: `8000`
-- **Docs**: `http://localhost:8000/docs`
-- **OpenAPI**: `http://localhost:8000/openapi.json`
 For visual debugging and development:
 
 ```bash
@@ -227,6 +317,8 @@ This opens the LangGraph Studio interface for visualizing and debugging your blo
 - **`src/ai/`**: Core AI components using LangGraph
 - **`src/api/`**: FastAPI endpoints and API management
 - **`src/core/`**: Application configuration and utilities
+- **`studio/`**: LangGraph Studio configuration
+
 ## 🛠️ Tech Stack
 
 - **[Python 3.13+](https://www.python.org/)** - Modern Python with latest features
@@ -237,6 +329,17 @@ This opens the LangGraph Studio interface for visualizing and debugging your blo
 - **[Uvicorn](https://www.uvicorn.org/)** - Lightning-fast ASGI server
 - **[uv](https://docs.astral.sh/uv/)** - Ultra-fast Python package installer
 - **[Tavily](https://tavily.com/)** - AI-optimized search API
+
+## 🤝 Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+
+Quick steps:
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## 🙏 Acknowledgments
 
@@ -258,76 +361,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Built with ❤️ using Python, FastAPI, LangGraph, and modern AI technologies**
-### Supported Providers
-
-- **Groq**: Fast inference with open models
-- **OpenAI**: GPT-3.5, GPT-4, and newer models
-- **Anthropic**: Claude models
-- **Custom APIs**: Any OpenAI-compatible API
-
-## 🧪 Testing
-
-### Manual Testing
-
-```bash
-# Test the API
-curl -X POST "http://localhost:8000/blog/" \
-     -H "Content-Type: application/json" \
-     -d '{"topic": "Python Web Development"}'
-```
-
-### Using Postman
-
-Import the API schema from `http://localhost:8000/openapi.json` for testing with Postman.
-
-## 🚀 Deployment
-
-### Development
-
-```bash
-python main.py
-```
-
-### Production
-
-```bash
-# Using the built-in production server
-python server.py prod
-```
-
-### Docker
-
-```bash
-# Build image
-docker build -t blogforge .
-
-# Run container
-docker run -p 8000:8000 --env-file .env blogforge
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [LangGraph](https://github.com/langchain-ai/langgraph) for workflow orchestration
-- [FastAPI](https://fastapi.tiangolo.com/) for the web framework
-- [Pydantic](https://pydantic-docs.helpmanual.io/) for data validation
-
-## 📞 Support
-
-- Create an [issue](https://github.com/yourusername/blogforge/issues) for bug reports
-- Start a [discussion](https://github.com/yourusername/blogforge/discussions) for questions
-
----
-
-**Built with ❤️ using Python, FastAPI, and LangGraph**
