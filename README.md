@@ -47,8 +47,8 @@ BlogForge/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/blogforge.git
-cd blogforge
+git clone https://github.com/pavm035/BlogForge.git
+cd BlogForge
 
 # 2. Install uv if you haven't already
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -68,8 +68,8 @@ uv run main.py
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/blogforge.git
-cd blogforge
+git clone https://github.com/pavm035/BlogForge.git
+cd BlogForge
 
 # 2. Create virtual environment
 python -m venv .venv
@@ -247,8 +247,8 @@ This opens the LangGraph Studio interface for visualizing and debugging your blo
 
 ## 📞 Support
 
-- 🐛 Create an [issue](https://github.com/yourusername/blogforge/issues) for bug reports
-- 💬 Start a [discussion](https://github.com/yourusername/blogforge/discussions) for questions
+- 🐛 Create an [issue](https://github.com/pavm035/BlogForge/issues) for bug reports
+- 💬 Start a [discussion](https://github.com/pavm035/BlogForge/discussions) for questions
 - ⭐ Star the repo if you find it useful!
 
 ## 📄 License

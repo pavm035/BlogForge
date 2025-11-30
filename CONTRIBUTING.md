@@ -7,8 +7,8 @@ Thank you for your interest in contributing to BlogForge! This document provides
 1. **Fork the repository**
 2. **Clone your fork**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/blogforge.git
-   cd blogforge
+   git clone https://github.com/YOUR_USERNAME/BlogForge.git
+   cd BlogForge
    ```
 3. **Set up development environment**
    ```bash
@@ -174,8 +174,8 @@ Before submitting your PR, ensure:
 
 ## 📞 Questions?
 
-- Open a [Discussion](https://github.com/yourusername/blogforge/discussions)
-- Ask in the [Issues](https://github.com/yourusername/blogforge/issues)
+- Open a [Discussion](https://github.com/pavm035/BlogForge/discussions)
+- Ask in the [Issues](https://github.com/pavm035/BlogForge/issues)
 
 ## 📄 License
 
