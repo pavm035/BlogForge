@@ -1,0 +1,7 @@
+{
+  "dependencies": ["../."],
+  "graphs": {
+    "blog_forge": "./studio_blog_graph.py:graph"
+  },
+  "env": "../.env"
+}

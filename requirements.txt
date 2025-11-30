@@ -1,0 +1,9 @@
+langchain
+langgraph
+langchain_core
+langchain_groq
+fastapi
+uvicorn
+watchdog
+pydantic
+langgraph-cli[inmem]
